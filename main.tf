@@ -175,7 +175,7 @@ resource "azurerm_linux_virtual_machine" "vm-website" {
   location                        = var.location
   resource_group_name             = var.rg_name
   network_interface_ids           = [azurerm_network_interface.nic1[count.index].id]
-  size                            = "Standard_B1ls"
+  size                            = "Standard_B1s"
   admin_username                  = "user-formation"
   admin_password                  = "formationCodingGame0!"
   disable_password_authentication = false
