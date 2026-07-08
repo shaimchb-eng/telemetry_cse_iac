@@ -92,15 +92,18 @@ resource "azurerm_mysql_flexible_server_firewall_rule" "mysqlfwrule1" {
 }
 # Create a Virtual Network
 resource "azurerm_virtual_network" "vnet1" {
+  count               = var.deploy_vm ? 1 : 0
   name                = "vnet1-iac"
   address_space       = ["10.0.0.0/16"]
   location            = var.location
   resource_group_name = var.rg_name
-
-  subnet {
-    name             = "subnet1-iac"
-    address_prefixes = ["10.0.1.0/24"]
-  }
+}
+resource "azurerm_subnet" "subnet1" {
+  count                = var.deploy_vm ? 1 : 0
+  name                 = "subnet1-iac"
+  resource_group_name  = var.rg_name
+  virtual_network_name = azurerm_virtual_network.vnet1[count.index].name
+  address_prefixes     = ["10.0.1.0/24"]
 }
 # Create a public IP
 resource "azurerm_public_ip" "publicIP1" {
